@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GenericHost
 {
-    public static class Extensions
+    public static class GHExt
     {
         public static IHostBuilder UseServiceBaseLifetime(this IHostBuilder hostBuilder)
         {
