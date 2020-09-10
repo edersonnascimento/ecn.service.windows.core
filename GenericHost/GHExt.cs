@@ -82,7 +82,7 @@ namespace GenericHost
             if (!batchFile.Exists || batchFile.Length == 0) {
                 batchFile.Delete();
 
-                string exeName = Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe");
+                string exeName = Assembly.GetEntryAssembly().Location.Replace(".dll", ".exe");
 
                 StringBuilder batchText = new StringBuilder();
                 batchText.AppendLine("REM Install the service:");
