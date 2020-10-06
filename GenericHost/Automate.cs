@@ -25,9 +25,7 @@ namespace GenericHost
         {
             try {
                 if(Automation.State == IAutomation.eState.Waiting) {
-                    logger.Debug($"Processo {Automation.GetType().FullName} iniciado!");
                     Automation.Execute();
-                    logger.Debug($"Processo {Automation.GetType().FullName} finalizado!");
                 }
             } catch (Exception e) {
                 logger.Error(e);
