@@ -5,6 +5,7 @@ namespace GenericHost
     public abstract class AbstractExclusiveAutomation : IAutomation
     {
         protected static Logger _logger = LogManager.GetCurrentClassLogger();
+        protected static bool _stop;
         public IAutomation.eState State { get; private set; }
 
         protected abstract void ExclusiveExecute();
@@ -22,6 +23,9 @@ namespace GenericHost
                 }
             }
         }
-        public abstract void Stop();
+        public virtual void Stop()
+        {
+            _stop = true;
+        }
     }
 }

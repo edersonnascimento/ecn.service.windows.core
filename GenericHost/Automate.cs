@@ -1,14 +1,17 @@
 ﻿using NLog;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace GenericHost
 {
     public class Automate
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private Timer _timer;
         private object _locker = new object();
+        private static bool _stop;
 
         public Automate(IAutomation automation, int delay)
         {
@@ -24,7 +27,7 @@ namespace GenericHost
         private void executeAutomation()
         {
             try {
-                if(Automation.State == IAutomation.eState.Waiting) {
+                if (Automation.State == IAutomation.eState.Waiting) {
                     Automation.Execute();
                 }
             } catch (Exception e) {
@@ -32,16 +35,33 @@ namespace GenericHost
             }
         }
 
-        public void Start() =>
+        public void Start()
+        {
+            _stop = false;
             _timer = new Timer(
                 e => executeAutomation(),
                 null,
                 TimeSpan.Zero,
                 TimeSpan.FromSeconds(Delay)
            );
+        }
+
+        public static void Wait(CancellationToken cancellationToken)
+        {
+            Task.Run(() => {
+                while (true) {
+                    if (cancellationToken.IsCancellationRequested || _stop) {
+                        break;
+                    }
+                    Task.Delay(1000);
+                }
+            }, cancellationToken)
+            .Wait();
+        }
 
         public void Stop()
         {
+            _stop = true;
             Automation.Stop();
             _timer?.Change(Timeout.Infinite, 0);
         }
