@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System;
 
 namespace GenericHost
 {
@@ -17,6 +18,8 @@ namespace GenericHost
                 try {
                     State = IAutomation.eState.Executing;
                     ExclusiveExecute();
+                } catch (Exception e) {
+                    _logger.Error(e);
                 } finally {
                     State = IAutomation.eState.Waiting;
                     _logger.Trace($"Ending {this.GetType().Name} Process");
