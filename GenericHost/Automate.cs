@@ -13,6 +13,11 @@ namespace GenericHost
         private object _locker = new object();
         private static bool _stop;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="automation">Classe que automatiza a tarefa</param>
+        /// <param name="delay">Tempo (em segundos) entre os ciclos</param>
         public Automate(IAutomation automation, int delay)
         {
             Automation = automation;
